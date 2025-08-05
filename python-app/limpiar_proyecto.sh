@@ -21,6 +21,4 @@ echo "📁 Eliminando archivos temporales..."
 echo "✅ Proyecto limpio"
 echo
 echo "Para reconstruir el proyecto:"
-echo "1. python -m venv venv"
-echo "2. source venv/bin/activate (o venv\Scripts\activate en Windows)"
-echo "3. pip install -r requirements.txt"
+echo "Ejecuta ./start_app.sh"

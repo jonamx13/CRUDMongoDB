@@ -69,13 +69,12 @@ def configurar_mongodb():
     opciones = [
         "Usar Docker (recomendado)",
         "Usar MongoDB local",
-        "Usar una instancia remota"
     ]
     
     for i, opcion in enumerate(opciones, 1):
         print(f"{i}. {opcion}")
     
-    eleccion = input("\nSelecciona una opción (1-3): ").strip()
+    eleccion = input("\nSelecciona una opción (1-2): ").strip()
     
     config = {
         "MONGO_HOST": "localhost",
@@ -93,12 +92,6 @@ def configurar_mongodb():
     elif eleccion == "2":
         print("\n✅ Configurado para usar MongoDB local (puerto 27017)")
         print("⚠️ Verifica que no tengas otro MongoDB ejecutándose en este puerto")
-    elif eleccion == "3":
-        config["MONGO_HOST"] = input("Host (ej: cluster.mongodb.net): ").strip()
-        config["MONGO_PORT"] = input("Puerto (ej: 27017): ").strip()
-        config["MONGO_DB"] = input("Nombre de la base de datos: ").strip()
-        config["MONGO_COLLECTION"] = input("Nombre de la colección: ").strip()
-        print("\n✅ Configurado para instancia remota")
     else:
         print("Opción inválida, usando configuración por defecto")
     
