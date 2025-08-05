@@ -1,23 +1,26 @@
 #!/bin/bash
 
-echo "🐍 Activando entorno virtual..."
+echo "🧹 Limpiando proyecto..."
 
-# Detectar el sistema operativo
-if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
-    echo "💻 Sistema detectado: Windows (Git Bash)"
-    winpty venv/Scripts/activate.bat
-elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    echo "💻 Sistema detectado: Linux"
-    source venv/bin/activate
-elif [[ "$OSTYPE" == "darwin"* ]]; then
-    echo "💻 Sistema detectado: macOS"
-    source venv/bin/activate
-else
-    echo "⚠️ Sistema operativo no soportado automáticamente."
-    echo "Activa manualmente el entorno virtual:"
-    echo "  Windows: venv\\Scripts\\activate"
-    echo "  Linux/macOS: source venv/bin/activate"
+# Eliminar entorno virtual
+if [ -d "venv" ]; then
+    echo "🗑️ Eliminando entorno virtual..."
+    rm -rf venv
 fi
 
-echo "✅ Entorno virtual activado"
-echo "📦 Para instalar dependencias: pip install -r requirements.txt"
+# Eliminar caché de Python
+echo "🧼 Limpiando caché de Python..."
+find . -name "__pycache__" -exec rm -rf {} +
+find . -name "*.pyc" -exec rm -f {} +
+
+# Eliminar archivos generados
+echo "📁 Eliminando archivos temporales..."
+[ -f ".env" ] && rm .env
+[ -f "last_session.json" ] && rm last_session.json
+
+echo "✅ Proyecto limpio"
+echo
+echo "Para reconstruir el proyecto:"
+echo "1. python -m venv venv"
+echo "2. source venv/bin/activate (o venv\Scripts\activate en Windows)"
+echo "3. pip install -r requirements.txt"

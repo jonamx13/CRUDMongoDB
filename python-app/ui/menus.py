@@ -1,4 +1,3 @@
-# ui/menus.py
 """
 Funciones para la interfaz de usuario
 Maneja la visualización de menús y limpieza de pantalla
