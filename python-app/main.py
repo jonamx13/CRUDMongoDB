@@ -3,7 +3,7 @@ from session import leer_sesion, guardar_sesion, mostrar_info_sistema
 from db.mongo_utils import datos_ya_existen, insertar_datos_prueba, limpiar_coleccion
 from ui.menus import mostrar_menu, limpiar_pantalla, mostrar_banner
 
-from services.emp_service import (
+from services import (
     leer_empleados,
     crear_empleado,
     actualizar_empleado,
