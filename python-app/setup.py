@@ -60,23 +60,66 @@ def instalar_dependencias():
     else:
         print(f"❌ Error instalando dependencias: {output}")
         return False
+    
+def configurar_mongodb():
+    """Configura la conexión a MongoDB de forma interactiva"""
+    print("\n🔧 Configuración de MongoDB")
+    print("=" * 50)
+    
+    opciones = [
+        "Usar Docker (recomendado)",
+        "Usar MongoDB local",
+        "Usar una instancia remota"
+    ]
+    
+    for i, opcion in enumerate(opciones, 1):
+        print(f"{i}. {opcion}")
+    
+    eleccion = input("\nSelecciona una opción (1-3): ").strip()
+    
+    config = {
+        "MONGO_HOST": "localhost",
+        "MONGO_PORT": "27017",
+        "MONGO_DB": "empresa_db",
+        "MONGO_COLLECTION": "rh"
+    }
+    
+    if eleccion == "1":
+        # Docker usa un puerto diferente por defecto
+        config["MONGO_PORT"] = "27018"
+        print("\n✅ Configurado para usar MongoDB en Docker (puerto 27018)")
+        print("💡 Asegúrate de tener Docker Desktop instalado y ejecutar:")
+        print("   docker-compose up -d")
+    elif eleccion == "2":
+        print("\n✅ Configurado para usar MongoDB local (puerto 27017)")
+        print("⚠️ Verifica que no tengas otro MongoDB ejecutándose en este puerto")
+    elif eleccion == "3":
+        config["MONGO_HOST"] = input("Host (ej: cluster.mongodb.net): ").strip()
+        config["MONGO_PORT"] = input("Puerto (ej: 27017): ").strip()
+        config["MONGO_DB"] = input("Nombre de la base de datos: ").strip()
+        config["MONGO_COLLECTION"] = input("Nombre de la colección: ").strip()
+        print("\n✅ Configurado para instancia remota")
+    else:
+        print("Opción inválida, usando configuración por defecto")
+    
+    return config
 
-def crear_archivo_env():
+def crear_archivo_env(config):
     """Crea el archivo .env con codificación UTF-8"""
     if not os.path.exists('.env'):
-        print("\n⚙️ Creando archivo .env con codificación UTF-8...")
-        contenido = """# Configuración MongoDB
-MONGO_URI=mongodb://localhost:27017
-MONGO_DB=empresa_db
-MONGO_COLLECTION=rh
+        print("\n⚙️ Creando archivo .env...")
+    contenido = f"""# Configuración MongoDB
+MONGO_URI=mongodb://{config['MONGO_HOST']}:{config['MONGO_PORT']}
+MONGO_DB={config['MONGO_DB']}
+MONGO_COLLECTION={config['MONGO_COLLECTION']}
 """
-        try:
-            # Guardar explícitamente como UTF-8
-            with open('.env', 'w', encoding='utf-8') as f:
-                f.write(contenido)
-            print("✅ Archivo .env creado (UTF-8)")
-        except Exception as e:
-            print(f"❌ Error al crear .env: {e}")
+    try:
+        # Guardar explícitamente como UTF-8
+        with open('.env', 'w', encoding='utf-8') as f:
+            f.write(contenido)
+        print("✅ Archivo .env creado (UTF-8)")
+    except Exception as e:
+        print(f"❌ Error al crear .env: {e}")
     else:
         print("\nℹ️ Archivo .env ya existe")
         # Verificar si podemos leer como UTF-8
@@ -87,6 +130,8 @@ MONGO_COLLECTION=rh
             print("⚠️ El .env tiene problemas de codificación, creando nuevo...")
             os.rename('.env', '.env.backup')
             crear_archivo_env()
+
+        return config
 
 def verificar_mongodb():
     """Verifica si MongoDB está disponible"""
@@ -146,21 +191,23 @@ def main():
         print("   Ejecuta este script desde el directorio python-app/")
         return False
     
-    # 1. Crear entorno virtual
+    # Paso 1: Configurar MongoDB
+    config = configurar_mongodb()
+    
+    # Paso 2: Crear entorno virtual si no existe
     if not os.path.exists('venv'):
-        if not crear_entorno_virtual():
-            return False
+        crear_entorno_virtual()
+
     else:
         print("\nℹ️ Entorno virtual ya existe, omitiendo creación")
     
-    # 2. Instalar dependencias
-    if not instalar_dependencias():
-        return False
+    # Paso 3: Instalar dependencias
+    instalar_dependencias()
     
-    # 3. Crear archivo .env
-    crear_archivo_env()
+    # Paso 4: Crear archivo .env
+    crear_archivo_env(config)
     
-    # 4. Verificar MongoDB
+    # Paso 5: Verificar conexión a MongoDB
     verificar_mongodb()
     
     # Mostrar pasos siguientes

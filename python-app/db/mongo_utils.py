@@ -11,19 +11,21 @@ logger = logging.getLogger(__name__)
 def datos_ya_existen():
     """
     Verifica si existen empleados en la colección
-    
-    Returns:
-        bool: True si hay documentos, False si está vacía o hay error
+    - Devuelve True si hay datos
+    - Devuelve False si está vacío
+    - Devuelve None si hay error de conexión
     """
     try:
         collection = get_collection()
-        if collection is not None:
-            total = collection.count_documents({})
-            return total > 0
-        return False
+        if collection is None:
+            logger.error("No se pudo conectar a la colección")
+            return None
+        
+        return collection.count_documents({"empno": {"$exists": True}}) > 0
+
     except Exception as e:
         logger.error(f"Error al verificar datos existentes: {e}")
-        return False
+        return None
 
 def insertar_datos_prueba():
     """

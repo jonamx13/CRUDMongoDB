@@ -1,4 +1,3 @@
-import os
 from session import leer_sesion, guardar_sesion, mostrar_info_sistema
 from db.mongo_utils import datos_ya_existen, insertar_datos_prueba, limpiar_coleccion
 from ui.menus import mostrar_menu, limpiar_pantalla, mostrar_banner
@@ -110,6 +109,10 @@ if __name__ == "__main__":
     
     # Leer última sesión
     ultima = leer_sesion()
+
+    # Verificar estado de la base de datos
+    estado_db = datos_ya_existen()
+
     if ultima:
         print(f"\n👋 Bienvenido de nuevo.")
         print(f"📅 Tu última sesión fue el {ultima['fecha']}")
@@ -121,6 +124,21 @@ if __name__ == "__main__":
     else:
         print("\n👋 Bienvenido por primera vez a la aplicación MongoDB CRUD.")
         print("ℹ️ Usa la opción 7 para insertar datos de prueba.")
+
+    if estado_db is None:
+        print("\n❌ No se pudo conectar a la base de datos")
+        print("💡 Soluciones posibles:")
+        print("1. Verifica que MongoDB esté corriendo")
+        print("2. Ejecuta 'docker-compose up -d' si usas Docker")
+        print("3. Revisa tu configuración en .env")
+        print("4. Ejecuta 'python setup.py' para reconfigurar")
+        input("\nPresiona ENTER para salir...")
+        exit(1)
+    elif estado_db:
+        print("ℹ️ La base de datos contiene empleados")
+    else:
+        print("ℹ️ La base de datos está vacía")
+        print("💡 Puedes insertar datos de prueba con la opción 7")
 
     # Iniciar menú principal
     menu()

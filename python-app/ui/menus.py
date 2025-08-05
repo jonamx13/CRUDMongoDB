@@ -35,7 +35,6 @@ def mostrar_menu():
     print("6. 🏢 Listar por departamento")
     print("7. 🧪 Insertar datos de prueba")
     print("8. 🧹 Limpiar base de datos")
-    print("9. 📊 Mostrar estadísticas")
     print("0. 🚪 Salir")
     print("=" * 40)
 

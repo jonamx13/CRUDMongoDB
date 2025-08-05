@@ -8,10 +8,14 @@ from pymongo import MongoClient
 from dotenv import load_dotenv, find_dotenv
 import logging
 import sys
+import socket
 
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# Cargar variables de entorno
+load_dotenv()
 
 # Intentar cargar .env con diferentes codificaciones
 try:
@@ -65,10 +69,14 @@ class MongoDBConnection:
                 
                 # Verificar conexión con un comando simple
                 self._client.admin.command('ping')
-                logger.info("✅ Conexión a MongoDB exitosa")
+                logger.info("✅ Conexión a MongoDB exitosa: {mongo_uri}")
                 
             except Exception as e:
                 logger.error(f"❌ Error al conectar a MongoDB: {e}")
+                logger.info("💡 Soluciones posibles:")
+                logger.info("1. Verifica que MongoDB esté corriendo")
+                logger.info("2. Ejecuta 'docker-compose up -d' si usas Docker")
+                logger.info("3. Revisa tu configuración en .env")
                 self._client = None
                 
         return self._client
