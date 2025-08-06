@@ -5,17 +5,20 @@ Maneja conexiones persistentes con timeouts configurados
 
 import os
 from pymongo import MongoClient
+from pathlib import Path
 from dotenv import load_dotenv, find_dotenv
 import logging
 import sys
-import socket
+
+
 
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Cargar variables de entorno
-load_dotenv()
+dotenv_path = Path(__file__).resolve().parent.parent / ".env"
+load_dotenv(dotenv_path, encoding='utf-8')
 
 # Intentar cargar .env con diferentes codificaciones
 try:

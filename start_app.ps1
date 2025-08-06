@@ -1,5 +1,4 @@
-﻿# start_app.ps1
-# Script de inicio para aplicación MongoDB CRUD - Compatible con PowerShell
+﻿# Script de inicio para aplicación MongoDB CRUD - Compatible con PowerShell
 
 # Configurar codificación para caracteres especiales
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
