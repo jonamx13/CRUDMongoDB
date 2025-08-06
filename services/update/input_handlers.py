@@ -1,7 +1,7 @@
 """
 Manejadores de entrada para actualización de empleados
 """
-from shared import constants, input_utils
+from services.shared import constants, input_utils
 from services.shared.input_utils import obtener_dato_texto, obtener_dato_numerico
 
 def obtener_nuevo_nombre(nombre_actual):

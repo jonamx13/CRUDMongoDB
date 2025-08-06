@@ -7,7 +7,7 @@ from services.read.service import leer_empleados
 from ui.menus import limpiar_pantalla
 from .input_handlers import obtener_nuevo_nombre, obtener_nuevo_puesto, obtener_nuevo_salario, obtener_nuevo_departamento_completo
 from .display import mostrar_comparacion
-from shared import constants
+from services.shared import constants
 from services.shared.input_utils import obtener_dato_numerico, obtener_dato_texto, obtener_opcion_reintento
 
 logger = logging.getLogger(__name__)

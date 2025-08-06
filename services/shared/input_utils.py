@@ -1,5 +1,5 @@
 """
-Utilidades para entrada de datos
+Utilidades para entrada de datos compartidas entre servicios
 """
 import logging
 
@@ -88,6 +88,71 @@ def obtener_dato_texto(
             if intento < reintentos - 1:
                 print(f"🔄 Inténtalo de nuevo ({intento + 1}/{reintentos})")
                 print("💡 Escribe 'atras' para volver o 'cancelar' para salir")
+            continue
+            
+        return valor.upper()
+    
+    print("❌ Demasiados intentos fallidos. Operación cancelada.")
+    return None
+
+def obtener_opcion_reintento(razon: str) -> str:
+    """
+    Pregunta al usuario qué hacer después de un error
+    
+    Args:
+        razon: Descripción del problema ocurrido
+        
+    Returns:
+        str: 'reintentar' para intentar nuevamente o 'cancelar' para salir
+    """
+    print(f"\n⚠️ No se pudo proceder debido a: {razon}")
+    print("¿Qué deseas hacer?")
+    print("1. Intentar de nuevo")
+    print("2. Cancelar operación")
+    
+    while True:
+        opcion = input("\nElige una opción (1-2): ").strip().lower()
+        
+        if opcion == '1' or opcion == 'reintentar':
+            return 'reintentar'
+        elif opcion == '2' or opcion == 'cancelar':
+            return 'cancelar'
+        else:
+            print("❌ Opción no válida. Elige 1 (reintentar) o 2 (cancelar)")
+
+def obtener_dato_texto_opcional(
+    prompt: str,
+    valor_actual: str = None,
+    max_longitud: int = None,
+    mensaje_error: str = "❌ Texto inválido",
+    reintentos: int = 3
+):
+    """
+    Obtiene un dato de texto opcional (puede mantener el valor actual)
+    
+    Args:
+        prompt: Mensaje para mostrar
+        valor_actual: Valor actual que se mantendrá si no se ingresa nada
+        max_longitud: Longitud máxima permitida
+        mensaje_error: Mensaje a mostrar en error
+        reintentos: Intentos permitidos
+        
+    Returns:
+        str: Nuevo valor, valor actual o None si se cancela
+    """
+    for intento in range(reintentos):
+        valor = input(prompt).strip()
+        if valor.lower() == 'cancelar':
+            return None
+        elif valor.lower() == 'atras':
+            return 'atras'
+        elif valor == '':
+            return valor_actual
+            
+        if max_longitud and len(valor) > max_longitud:
+            print(f"❌ El texto no puede exceder {max_longitud} caracteres")
+            if intento < reintentos - 1:
+                print(f"🔄 Inténtalo de nuevo ({intento + 1}/{reintentos})")
             continue
             
         return valor.upper()

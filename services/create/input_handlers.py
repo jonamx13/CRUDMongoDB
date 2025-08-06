@@ -1,7 +1,7 @@
 """
 Manejadores de entrada para creación de empleados
 """
-from shared import constants, input_utils
+from services.shared import constants, input_utils
 from db.mongo_config import get_collection
 from pymongo.errors import DuplicateKeyError
 
