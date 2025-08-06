@@ -101,30 +101,21 @@ def crear_archivo_env(config):
     """Crea el archivo .env con codificación UTF-8"""
     if not os.path.exists('.env'):
         print("\n⚙️ Creando archivo .env...")
-    contenido = f"""# Configuración MongoDB
+        contenido = f"""# Configuración MongoDB
 MONGO_URI=mongodb://{config['MONGO_HOST']}:{config['MONGO_PORT']}
 MONGO_DB={config['MONGO_DB']}
 MONGO_COLLECTION={config['MONGO_COLLECTION']}
 """
-    try:
-        # Guardar explícitamente como UTF-8
-        with open('.env', 'w', encoding='utf-8') as f:
-            f.write(contenido)
-        print("✅ Archivo .env creado (UTF-8)")
-    except Exception as e:
-        print(f"❌ Error al crear .env: {e}")
+        try:
+            with open('.env', 'w', encoding='utf-8') as f:
+                f.write(contenido)
+            print("✅ Archivo .env creado (UTF-8)")
+        except Exception as e:
+            print(f"❌ Error al crear .env: {e}")
     else:
         print("\nℹ️ Archivo .env ya existe")
-        # Verificar si podemos leer como UTF-8
-        try:
-            with open('.env', 'r', encoding='utf-8') as f:
-                f.read()
-        except UnicodeDecodeError:
-            print("⚠️ El .env tiene problemas de codificación, creando nuevo...")
-            os.rename('.env', '.env.backup')
-            crear_archivo_env()
 
-        return config
+    return config
 
 def verificar_mongodb():
     """Verifica si MongoDB está disponible"""
