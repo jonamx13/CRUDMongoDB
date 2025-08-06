@@ -8,7 +8,6 @@ from services import (
     actualizar_empleado,
     eliminar_empleado,
     buscar_empleado,
-    listar_por_departamento
 )
 
 def menu():
@@ -47,11 +46,6 @@ def menu():
                 
             case "6":
                 limpiar_pantalla()
-                listar_por_departamento()
-                input("\nPresiona ENTER para continuar...")
-                
-            case "7":
-                limpiar_pantalla()
                 if datos_ya_existen():
                     print("⚠️ La base de datos ya contiene empleados.")
                     print("\nOpciones disponibles:")
@@ -76,7 +70,7 @@ def menu():
                         insertar_datos_prueba()
                 input("\nPresiona ENTER para continuar...")
                 
-            case "8":
+            case "7":
                 limpiar_pantalla()
                 confirmar = input("⚠️ ¿Estás seguro que deseas ELIMINAR TODOS los empleados? (S/N): ").strip().upper()
                 if confirmar == "S":
