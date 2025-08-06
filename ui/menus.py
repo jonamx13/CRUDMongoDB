@@ -32,9 +32,8 @@ def mostrar_menu():
     print("3. ✏️ Actualizar empleado")
     print("4. ❌ Eliminar empleado")
     print("5. 🔍 Buscar empleado por ID")
-    print("6. 🏢 Listar por departamento")
-    print("7. 🧪 Insertar datos de prueba")
-    print("8. 🧹 Limpiar base de datos")
+    print("6. 🧪 Insertar datos de prueba")
+    print("7. 🧹 Limpiar base de datos")
     print("0. 🚪 Salir")
     print("=" * 40)
 

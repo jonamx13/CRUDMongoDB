@@ -114,10 +114,10 @@ if __name__ == "__main__":
         if datos_ya_existen():
             print("ℹ️ La base de datos contiene empleados.")
         else:
-            print("ℹ️ La base de datos está vacía. Usa la opción 7 para insertar datos de prueba.")
+            print("ℹ️ La base de datos está vacía. Usa la opción 6 para insertar datos de prueba.")
     else:
         print("\n👋 Bienvenido por primera vez a la aplicación MongoDB CRUD.")
-        print("ℹ️ Usa la opción 7 para insertar datos de prueba.")
+        print("ℹ️ Usa la opción 6 para insertar datos de prueba.")
 
     if estado_db is None:
         print("\n❌ No se pudo conectar a la base de datos")
@@ -128,11 +128,6 @@ if __name__ == "__main__":
         print("4. Ejecuta 'python setup.py' para reconfigurar")
         input("\nPresiona ENTER para salir...")
         exit(1)
-    elif estado_db:
-        print("ℹ️ La base de datos contiene empleados")
-    else:
-        print("ℹ️ La base de datos está vacía")
-        print("💡 Puedes insertar datos de prueba con la opción 7")
 
     # Iniciar menú principal
     menu()

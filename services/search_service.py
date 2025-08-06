@@ -54,7 +54,6 @@ def buscar_empleado():
             if resultado == 'continuar':
                 continue  # Realizar otra búsqueda
             elif resultado == 'salir':
-                limpiar_pantalla()
                 return
             
     except Exception as e:
