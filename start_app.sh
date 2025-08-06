@@ -27,11 +27,11 @@ if [ ! -d "venv" ]; then
     read -p "¿Deseas crearlo y instalar dependencias? (s/n): " crear_venv
     if [[ "$crear_venv" == "s" ]]; then
         python -m venv venv
-        source venv/Scripts/activate
+        source venv/bin/activate
         pip install -r requirements.txt
     fi
 else
-    source venv/Scripts/activate
+    source venv/bin/activate
 fi
 
 # Verificar archivo .env
