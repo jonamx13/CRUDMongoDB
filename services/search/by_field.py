@@ -1,64 +1,9 @@
 """
-Servicios para buscar empleados - Versión corregida
+Búsqueda de empleados por diferentes campos
 """
-import logging
+from services.shared.input_utils import obtener_dato_texto, obtener_dato_numerico
 from db.mongo_config import get_collection
-from ui.menus import limpiar_pantalla
-
-logger = logging.getLogger(__name__)
-
-def buscar_empleado():
-    """
-    Busca empleados con múltiples criterios y validación robusta
-    
-    Returns:
-        None: Interacción por consola con manejo de errores mejorado
-    """
-    try:
-        collection = get_collection()
-        if collection is None:
-            print("❌ No se pudo conectar a la base de datos")
-            return
-
-        while True:  # Bucle principal para permitir múltiples búsquedas
-            limpiar_pantalla()
-            print("🔍 Buscar empleados")
-            print("💡 Puedes escribir 'cancelar' en cualquier momento para salir\n")
-            
-            # Mostrar opciones de búsqueda
-            print("Opciones de búsqueda:")
-            print("1. Buscar por ID")
-            print("2. Buscar por nombre")
-            print("3. Buscar por puesto")
-            print("4. Buscar por departamento")
-            
-            opcion = input("\nElige una opción (1-4 o 'cancelar'): ").strip()
-            
-            if opcion.lower() == 'cancelar':
-                print("❌ Búsqueda cancelada por el usuario.")
-                return
-            elif opcion == '1':
-                resultado = buscar_por_id(collection)
-            elif opcion == '2':
-                resultado = buscar_por_nombre(collection)
-            elif opcion == '3':
-                resultado = buscar_por_puesto(collection)
-            elif opcion == '4':
-                resultado = buscar_por_departamento(collection)
-            else:
-                print("❌ Opción no válida. Elige una opción del 1 al 4.")
-                input("\nPresiona ENTER para continuar...")
-                continue
-                
-            # Manejar resultado de la búsqueda
-            if resultado == 'continuar':
-                continue  # Realizar otra búsqueda
-            elif resultado == 'salir':
-                return
-            
-    except Exception as e:
-        logger.error(f"Error inesperado en búsqueda: {e}")
-        print(f"❌ Error inesperado en búsqueda: {str(e)}")
+from .display import mostrar_detalles_empleado, mostrar_lista_empleados, manejar_despues_resultado
 
 def buscar_por_id(collection):
     """Busca un empleado por su ID"""
@@ -172,91 +117,6 @@ def buscar_por_departamento(collection):
             mostrar_lista_empleados(empleados)
             return manejar_despues_resultado()
 
-
-
-def mostrar_detalles_empleado(empleado: dict):
-    """Muestra los detalles completos de un empleado"""
-    print("\n📋 Información del empleado:")
-    print("-" * 60)
-    print(f"ID: {empleado['empno']}")
-    print(f"Nombre: {empleado['ename']}")
-    print(f"Puesto: {empleado['job']}")
-    print(f"Salario: ${empleado['sal']:,.2f}")
-    
-    dept = empleado.get('departamento', {})
-    if dept:
-        print(f"Departamento: {dept.get('dname', 'N/A')} (#{dept.get('deptno', 'N/A')})")
-        print(f"Ubicación: {dept.get('loc', 'N/A')}")
-    else:
-        print("Departamento: Sin asignar")
-    print("-" * 60)
-
-def mostrar_lista_empleados(empleados: list):
-    """Muestra una lista resumida de empleados"""
-    print("\n" + "="*90)
-    print(f"{'ID':<6} {'NOMBRE':<12} {'PUESTO':<12} {'SALARIO':<12} {'DEPARTAMENTO':<20} {'UBICACIÓN'}")
-    print("="*90)
-    
-    for emp in empleados:
-        dept = emp.get('departamento', {})
-        dept_name = dept.get('dname', 'N/A')[:19]  # Truncar si es muy largo
-        dept_loc = dept.get('loc', 'N/A')
-        
-        print(f"{emp['empno']:<6} {emp['ename']:<12} {emp['job']:<12} ${emp['sal']:<11,.2f} {dept_name:<20} {dept_loc}")
-    
-    print("="*90)
-    
-    # Si hay muchos resultados, ofrecer ver detalles
-    if len(empleados) <= 10:
-        print(f"\n💡 ¿Deseas ver los detalles de algún empleado específico?")
-        ver_detalles = input("Escribe el ID del empleado o presiona ENTER para continuar: ").strip()
-        
-        if ver_detalles:
-            try:
-                empno = int(ver_detalles)
-                empleado_detalle = next((emp for emp in empleados if emp['empno'] == empno), None)
-                if empleado_detalle:
-                    mostrar_detalles_empleado(empleado_detalle)
-                else:
-                    print(f"❌ ID {empno} no está en los resultados mostrados.")
-            except ValueError:
-                print("❌ ID inválido.")
-
-def manejar_despues_resultado():
-    """Maneja las opciones después de mostrar resultados"""
-    print("\n¿Qué deseas hacer ahora?")
-    print("1. Realizar otra búsqueda")
-    print("2. Salir al menú principal")
-    
-    while True:
-        opcion = input("\nElige una opción (1-2): ").strip()
-        
-        if opcion == '1':
-            return 'continuar'
-        elif opcion == '2':
-            return 'salir'
-        elif opcion.lower() == 'cancelar':
-            return 'salir'
-        else:
-            print("❌ Opción no válida. Elige 1 o 2")
-
-def manejar_sin_resultados():
-    """Maneja el caso cuando no hay resultados"""
-    print("\n¿Qué deseas hacer ahora?")
-    print("1. Volver al menú de búsqueda")
-    print("2. Salir al menú principal")
-    
-    while True:
-        opcion = input("\nElige una opción (1-2): ").strip()
-        
-        if opcion == '1':
-            return 'continuar'
-        elif opcion == '2':
-            return 'salir'
-        else:
-            print("❌ Opción no válida. Elige 1 o 2")
-
-# Funciones auxiliares de validación
 def obtener_id_empleado(prompt, reintentos=3):
     """Obtiene el ID del empleado con validación"""
     for intento in range(reintentos):
@@ -307,34 +167,6 @@ def obtener_dato_texto(prompt, reintentos=3):
     
     print("❌ Demasiados intentos fallidos.")
     return None
-
-def obtener_dato_texto_opcional(prompt):
-    """Obtiene un dato de texto opcional"""
-    valor = input(prompt).strip()
-    if valor.lower() == 'cancelar':
-        return None
-    elif valor.lower() == 'atras':
-        return 'atras'
-    elif valor == '':
-        return ''
-    else:
-        return valor.upper()
-
-def obtener_dato_numerico_opcional(prompt, tipo=int):
-    """Obtiene un dato numérico opcional"""
-    valor = input(prompt).strip()
-    if valor.lower() == 'cancelar':
-        return None
-    elif valor.lower() == 'atras':
-        return 'atras'
-    elif valor == '':
-        return None  # Sin criterio numérico
-    else:
-        try:
-            return tipo(valor)
-        except ValueError:
-            print("❌ Debe ser un número válido")
-            return obtener_dato_numerico_opcional(prompt, tipo)
 
 def obtener_opcion_reintento(razon):
     """Pregunta al usuario qué hacer después de un error"""
