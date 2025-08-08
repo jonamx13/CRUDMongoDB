@@ -16,12 +16,12 @@ Aplicación CRUD (Create, Read, Update, Delete) para gestión de empleados utili
 ## 💡 Características Principales
 - **✅ Multiplataforma:** Funciona en ⊞ Windows, 🐧Linux y 🍎macOS
 - ✅ **Dos modos de conexión:** 🍃MongoDB local o con 🐋Docker
-✅ **Interfaz intuitiva:** Menús interactivos con navegación paso a paso
-✅ **Validación robusta:** Control de errores y reintentos en todas las operaciones
-✅ **MongoDB Express:** Acceso a interfaz web para administración de la base de datos
-✅ **Datos de prueba:** Inserción automática de datos de ejemplo (esquema SCOTT)
-✅ **Persistencia:** Guarda información de sesión entre ejecuciones
-✅ **Configuración automática:** Script de setup para preparar el entorno
+- ✅ **Interfaz intuitiva:** Menús interactivos con navegación paso a paso
+- ✅ **Validación robusta:** Control de errores y reintentos en todas las operaciones
+- ✅ **MongoDB Express:** Acceso a interfaz web para administración de la base de datos
+- ✅ **Datos de prueba:** Inserción automática de datos de ejemplo (esquema SCOTT)
+- ✅ **Persistencia:** Guarda información de sesión entre ejecuciones
+- ✅ **Configuración automática:** Script de setup para preparar el entorno
 
 ---
 
@@ -313,3 +313,4 @@ CRUDMongoDB/
 - **Alumno:** Jonathan Eduardo Olivas Meixueiro
 - **Matricula:** 240694
 - **Fecha de entrega:** 07/Agosto/2025
+
